@@ -452,6 +452,14 @@ static int wifi_sta_scan (lua_State *L)
     return 0;
 }
 
+static int wifi_sta_getrssi (lua_State *L) {
+  // https://github.com/espressif/esp-idf/issues/4484
+  wifi_ap_record_t ap;
+  esp_wifi_sta_get_ap_info(&ap);
+
+  lua_pushinteger(L, ap.rssi);
+  return 1;
+}
 
 LROT_PUBLIC_BEGIN(wifi_sta)
   LROT_FUNCENTRY( setip,       wifi_sta_setip )
@@ -463,6 +471,7 @@ LROT_PUBLIC_BEGIN(wifi_sta)
   LROT_FUNCENTRY( getmac,      wifi_sta_getmac )
   LROT_FUNCENTRY( on,          wifi_sta_on )
   LROT_FUNCENTRY( scan,        wifi_sta_scan )
+  LROT_FUNCENTRY( getrssi,     wifi_sta_getrssi )
 LROT_END(wifi_sta, NULL, 0)
 
 
